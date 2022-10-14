@@ -1,0 +1,115 @@
+:root{
+    --bg-color: rgba(0, 255, 242, 0.6);
+}
+*{
+    padding: 0;
+    margin: 0;
+}
+.main__container{
+    width: 100%;
+    height: 100vh;
+    background: url(./images/main\ container\ background\ image.jpg) no-repeat;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.main__container--content{
+    width: 70%;
+    height: 80vh;
+    background-color: var(--bg-color);
+    border-radius: 3rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.main__container--content > div{
+    height: 95%;
+    border-radius: 3rem;
+}
+.content__container--current--music{
+    width: 60%;
+    background: yellow;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: top;
+}
+.content__container--all--musics{
+    width: 34%;
+    background-color: blue;
+}
+.current__music--wallpaper{
+    background: green;
+    border-radius: 0 0 2rem 2rem;
+    height: 250px;
+    width: 250px;
+}
+.current__music--song--name{
+    background-color: blue;
+    font-size: 3rem;
+    margin-top: 1rem;
+    color: #ffffff;
+}
+.current__music--singer--name{
+    background: brown;
+    font-size: 1.5rem;
+    margin-top: .5rem;
+    color: #ffffff;
+}
+.current__music--song{
+    background-color: red;
+    margin-top: 2rem;
+}
+.current__music--control--container{
+    width: 300px;
+    margin-top: 2rem;
+    background: purple;
+    display: flex;
+    justify-content: space-around;
+}
+.current__music--control--container *{
+    color: #ffffff;
+    font-size: 2.5rem;
+}
+.current__music--timeline{
+    width: 300px;
+    height: 5px;
+    background: lime;
+    margin-top: 2.5rem;
+    position: relative;
+}
+.current__music--timeline::after , .current__music--timeline::before{
+    content: ".";
+    font-size: 200px;
+    position: absolute;
+    line-height: 0;
+    user-select: none;
+    top: -56px;
+}
+.current__music--timeline::after{
+    right: -35px;
+}
+.current__music--timeline::before{
+    left: -35px;
+}
+.timeline__line{
+    width: 100%;
+    height: 100%;
+    background: black;
+}
+.timeline__handle{
+    position: absolute;
+    width: 3px;
+    height: 25px;
+    top: -9px;
+    background: saddlebrown;
+}
+.current__music--likeAnddonwload{
+    background: palevioletred;
+    margin-top: 2rem;
+    display: flex;
+    gap: 100px;
+    font-size: 1rem;
+    color: #ffffff;
+}
