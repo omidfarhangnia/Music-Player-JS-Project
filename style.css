@@ -1,5 +1,7 @@
 :root{
-    --bg-color: rgba(0, 255, 242, 0.6);
+    --bg-color1: rgba(0, 255, 242, 0.6);
+    --bg-color2: rgba(80, 84, 121, 0.6);
+    --bg-color3: rgba(2, 4, 26, 0.6);
 }
 *{
     padding: 0;
@@ -17,7 +19,7 @@
 .main__container--content{
     width: 70%;
     height: 80vh;
-    background-color: var(--bg-color);
+    background-color: var(--bg-color1);
     border-radius: 3rem;
     display: flex;
     justify-content: space-around;
@@ -29,42 +31,42 @@
 }
 .content__container--current--music{
     width: 60%;
-    background: yellow;
+    background: var(--bg-color2);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: top;
 }
-.content__container--all--musics{
-    width: 34%;
-    background-color: blue;
-}
 .current__music--wallpaper{
-    background: green;
+    background-image: url(./images/cd\ disk\ symbol.png);
+    background-size: cover;
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position: center;
     border-radius: 0 0 2rem 2rem;
     height: 250px;
     width: 250px;
 }
 .current__music--song--name{
-    background-color: blue;
     font-size: 3rem;
     margin-top: 1rem;
     color: #ffffff;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-transform: capitalize;
 }
 .current__music--singer--name{
-    background: brown;
     font-size: 1.5rem;
     margin-top: .5rem;
     color: #ffffff;
+    text-transform: capitalize;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 .current__music--song{
-    background-color: red;
     margin-top: 2rem;
 }
 .current__music--control--container{
     width: 300px;
     margin-top: 2rem;
-    background: purple;
     display: flex;
     justify-content: space-around;
 }
@@ -75,7 +77,6 @@
 .current__music--timeline{
     width: 300px;
     height: 5px;
-    background: lime;
     margin-top: 2.5rem;
     position: relative;
 }
@@ -106,10 +107,41 @@
     background: saddlebrown;
 }
 .current__music--likeAnddonwload{
-    background: palevioletred;
     margin-top: 2rem;
     display: flex;
     gap: 100px;
     font-size: 1rem;
     color: #ffffff;
+}
+.content__container--musics{
+    width: 34%;
+    background-color: var(--bg-color3);
+}
+.content__container--musics{
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    box-sizing: border-box;
+    gap: 1rem;
+}
+button{
+    border: 0;
+}
+.content__container--musics > *{
+    background-color: var(--bg-color1);
+    color: #ffffff;
+    font-size: 1.8rem;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    padding: 1rem;
+    border-radius: 15px;
+}
+.content__container--musics > button > div{
+    height: 0;
+    border-radius: 10px;
+    visibility: hidden;
+}
+.content__container--musics > button:focus > div{
+    height: auto;
+    visibility: visible;
+    margin-top: 30px;
 }
