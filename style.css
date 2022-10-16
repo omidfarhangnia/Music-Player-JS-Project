@@ -75,36 +75,12 @@
     font-size: 2.5rem;
 }
 .current__music--timeline{
-    width: 300px;
-    height: 5px;
-    margin-top: 2.5rem;
-    position: relative;
-}
-.current__music--timeline::after , .current__music--timeline::before{
-    content: ".";
-    font-size: 200px;
-    position: absolute;
-    line-height: 0;
-    user-select: none;
-    top: -56px;
-}
-.current__music--timeline::after{
-    right: -35px;
-}
-.current__music--timeline::before{
-    left: -35px;
-}
-.timeline__line{
-    width: 100%;
-    height: 100%;
-    background: black;
-}
-.timeline__handle{
-    position: absolute;
-    width: 3px;
-    height: 25px;
-    top: -9px;
-    background: saddlebrown;
+    color: #ffffff;
+    font-size: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    font-family: monospace , 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 .current__music--likeAnddonwload{
     margin-top: 2rem;
