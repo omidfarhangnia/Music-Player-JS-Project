@@ -123,6 +123,7 @@
     padding: 2rem;
     box-sizing: border-box;
     gap: 1rem;
+    overflow-y: scroll;
 }
 button{
     border: 0;
@@ -144,4 +145,15 @@ button{
     height: auto;
     visibility: visible;
     margin-top: 30px;
+}
+.musics__tags{
+    font-size: 1rem;
+    padding: .5rem;
+    margin: .3rem;
+    border-radius: 10px;
+    text-transform: capitalize;
+}
+.musics__tags:hover{
+    background-color: var(--bg-color2);
+    transition: all .3s;
 }
