@@ -75,8 +75,8 @@ var ServerData = `
 ServerData = JSON.parse(ServerData);
 window.addEventListener("load", FillAllMusicElement);
 
+const AllMusicsAvailable = document.querySelector('.All__musics__available');
 function FillAllMusicElement () {
-    const AllMusicsAvailable = document.querySelector('.All__musics__available');
     let ElementsContainer = ``;
     for(var i = 0; i < ServerData.length; i++){
         var MusicElement = `<div class="musics__tags" Music--tag="${i}" onclick="playTrack(this)">${ServerData[i].SongName}</div>`;
@@ -91,12 +91,17 @@ function playTrack (element) {
     const CurrentMusicWallpaper = document.querySelector(".current__music--wallpaper");
     const CurrentMusicSongName = document.querySelector(".current__music--song--name");
     const CurrentMusicSingerName = document.querySelector(".current__music--singer--name");
-    let MusicData = ServerData[element.getAttribute("Music--tag")];
+    let MusicTag = element.getAttribute("Music--tag")
+    let MusicData = ServerData[MusicTag];
 
     CurrentMusicWallpaper.style.backgroundImage = MusicData.wallpaper;
     CurrentMusicSongName.innerHTML = MusicData.SongName;
-    CurrentMusicSingerName.innerHTML = MusicData.SingerName;
-    AudioTag.innerHTML = `<source src="${MusicData.path}">`;
+    if(MusicData.SingerName == "null"){
+        CurrentMusicSingerName.innerHTML = "unknown";
+    }else{
+        CurrentMusicSingerName.innerHTML = MusicData.SingerName;
+    }
+    AudioTag.innerHTML = `<source src="${MusicData.path}" Music--tag="${MusicTag}">`;
     isNeedReload = true;
     pauseAudio();
 }
@@ -125,4 +130,23 @@ function pauseAudio () {
     AudioTag.pause();
     ControlPlayBTN.innerHTML = `<i class="fa fa-play"></i>`;
     isPlaying = false;
+}
+
+const ControlNextBTN = document.querySelector(".control__next--btn");
+const ControlPrevBTN = document.querySelector(".control__prev--btn");
+ControlNextBTN.addEventListener("click", goNext);
+ControlPrevBTN.addEventListener("click", goPrev);
+
+function goNext () {
+    const CurrentMusicSource = AudioTag.querySelector("source");
+    let CurrentMusicTag = CurrentMusicSource.getAttribute("music--tag");
+    const NextMusic = AllMusicsAvailable.querySelector(`[music--tag="${++CurrentMusicTag}"`);
+    playTrack(NextMusic)
+}
+
+function goPrev () {
+    const CurrentMusicSource = AudioTag.querySelector("source");
+    let CurrentMusicTag = CurrentMusicSource.getAttribute("music--tag");
+    const PrevMusic = AllMusicsAvailable.querySelector(`[music--tag="${--CurrentMusicTag}"`);
+    playTrack(PrevMusic)
 }
