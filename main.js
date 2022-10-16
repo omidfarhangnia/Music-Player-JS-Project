@@ -86,14 +86,20 @@ function FillAllMusicElement () {
 }
 
 const AudioTag = document.querySelector(".content__container--audio");
-var isNeedReload = false;
+var isNeedReload = false , CurrentMusicSource;
 function playTrack (element) {
+    CurrentMusicSource = AudioTag.querySelector("source");
+    isNeedReload = true;
+    SetValuesForCurrentMusic();
+    pauseAudio();
+}
+
+function SetValuesForCurrentMusic () {
     const CurrentMusicWallpaper = document.querySelector(".current__music--wallpaper");
     const CurrentMusicSongName = document.querySelector(".current__music--song--name");
     const CurrentMusicSingerName = document.querySelector(".current__music--singer--name");
     let MusicTag = element.getAttribute("Music--tag")
     let MusicData = ServerData[MusicTag];
-
     CurrentMusicWallpaper.style.backgroundImage = MusicData.wallpaper;
     CurrentMusicSongName.innerHTML = MusicData.SongName;
     if(MusicData.SingerName == "null"){
@@ -102,10 +108,7 @@ function playTrack (element) {
         CurrentMusicSingerName.innerHTML = MusicData.SingerName;
     }
     AudioTag.innerHTML = `<source src="${MusicData.path}" Music--tag="${MusicTag}">`;
-    isNeedReload = true;
-    pauseAudio();
 }
-
 const ControlPlayBTN = document.querySelector(".control__play--btn");
 var isPlaying = false;
 ControlPlayBTN.addEventListener("click" , StartOrPause);
@@ -138,14 +141,12 @@ ControlNextBTN.addEventListener("click", goNext);
 ControlPrevBTN.addEventListener("click", goPrev);
 
 function goNext () {
-    const CurrentMusicSource = AudioTag.querySelector("source");
     let CurrentMusicTag = CurrentMusicSource.getAttribute("music--tag");
     const NextMusic = AllMusicsAvailable.querySelector(`[music--tag="${++CurrentMusicTag}"`);
     playTrack(NextMusic)
 }
 
 function goPrev () {
-    const CurrentMusicSource = AudioTag.querySelector("source");
     let CurrentMusicTag = CurrentMusicSource.getAttribute("music--tag");
     const PrevMusic = AllMusicsAvailable.querySelector(`[music--tag="${--CurrentMusicTag}"`);
     playTrack(PrevMusic)
