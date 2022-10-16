@@ -79,12 +79,21 @@ function FillAllMusicElement () {
     const AllMusicsAvailable = document.querySelector('.All__musics__available');
     let ElementsContainer = ``;
     for(var i = 0; i < ServerData.length; i++){
-        var MusicElement = `<div class="musics__tags" onclick="playThisTrack(this)">${ServerData[i].SongName}</div>`;
+        var MusicElement = `<div class="musics__tags" Music--tag="${i}" onclick="playTrack(this)">${ServerData[i].SongName}</div>`;
         ElementsContainer += MusicElement;
     }
     AllMusicsAvailable.innerHTML = ElementsContainer;
 }
 
-function playThisTrack(element){
-    console.log(element)
+function playTrack(element){
+    const CurrentMusicWallpaper = document.querySelector(".current__music--wallpaper");
+    const CurrentMusicSongName = document.querySelector(".current__music--song--name");
+    const CurrentMusicSingerName = document.querySelector(".current__music--singer--name");
+    const AudioTag = document.querySelector(".content__container--audio");
+    let MusicData = ServerData[element.getAttribute("Music--tag")];
+
+    CurrentMusicWallpaper.style.backgroundImage = MusicData.wallpaper;
+    CurrentMusicSongName.innerHTML = MusicData.SongName;
+    CurrentMusicSingerName.innerHTML = MusicData.SingerName;
+    AudioTag.innerHTML = `<source src="${MusicData.path}">`;
 }
