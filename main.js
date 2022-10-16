@@ -85,15 +85,44 @@ function FillAllMusicElement () {
     AllMusicsAvailable.innerHTML = ElementsContainer;
 }
 
-function playTrack(element){
+const AudioTag = document.querySelector(".content__container--audio");
+var isNeedReload = false;
+function playTrack (element) {
     const CurrentMusicWallpaper = document.querySelector(".current__music--wallpaper");
     const CurrentMusicSongName = document.querySelector(".current__music--song--name");
     const CurrentMusicSingerName = document.querySelector(".current__music--singer--name");
-    const AudioTag = document.querySelector(".content__container--audio");
     let MusicData = ServerData[element.getAttribute("Music--tag")];
 
     CurrentMusicWallpaper.style.backgroundImage = MusicData.wallpaper;
     CurrentMusicSongName.innerHTML = MusicData.SongName;
     CurrentMusicSingerName.innerHTML = MusicData.SingerName;
     AudioTag.innerHTML = `<source src="${MusicData.path}">`;
+    isNeedReload = true;
+    pauseAudio();
+}
+
+const ControlPlayBTN = document.querySelector(".control__play--btn");
+var isPlaying = false;
+ControlPlayBTN.addEventListener("click" , StartOrPause);
+function StartOrPause () {
+    if(isPlaying === true){
+        pauseAudio();
+    }else{
+        playAudio();
+    }
+}
+
+function playAudio () {
+    if(isNeedReload === true) {
+        AudioTag.load();
+        isNeedReload = false;
+    }
+    AudioTag.play();
+    ControlPlayBTN.innerHTML = `<i class="fa fa-pause"></i>`;
+    isPlaying = true;
+}
+function pauseAudio () {
+    AudioTag.pause();
+    ControlPlayBTN.innerHTML = `<i class="fa fa-play"></i>`;
+    isPlaying = false;
 }
