@@ -81,6 +81,8 @@ const CONTROL__NEXT__BUTTON = document.querySelector(".control__next--btn");
 const CONTROL__PREV__BUTTON = document.querySelector(".control__prev--btn");
 const CONTROL__PLAY__BUTTON = document.querySelector(".control__play--btn");
 const TIME__LINE__CURRENT__TIME = document.querySelector(".timeline__CurrentTime");
+const TIME__LINE__MAX__TIME = document.querySelector(".timeline__maxTime");
+const MUSIC__RANGE = document.querySelector("#music__range");
 
 var CurrentMusicSource, isItNeedReload = false, CurrentMinute = 0, CurrentSecond = 0, isPlaying = false, CalcTime;
 
@@ -103,35 +105,39 @@ function playTrack (element) {
     CurrentMusicSource = AUDIO__TAG.querySelector("source");
 }
 
-function SetValuesForTimersAndRange () {
-    const music__range = document.querySelector("#music__range");
-    const TimeLineMaxTime = document.querySelector(".timeline__maxTime");
-    let AudioTimeMin = (Math.floor(AUDIO__TAG.duration / 60)).toFixed(0);
-    let AudioTimeSec = (Math.round(AUDIO__TAG.duration % 60)).toFixed(0);
-    music__range.max = Math.round(AUDIO__TAG.duration);
-    clearCalcTime();
+// MUSIC__RANGE.addEventListener("change", changeTheRangeValue)
+// function changeTheRangeValue () {
+//     let newRangeValue = MUSIC__RANGE.getAttribute("value");
+//     console.log(newRangeValue)
+// }
 
-    let ZeroAdder = function (num) {
-        if (String(num).length >= 2) return num
-        return "0" + String(num);
-    }
-
-    CalcTime = setInterval(() => {
-        CurrentSecond++;
-        music__range.setAttribute("value", (CurrentSecond + CurrentMinute * 60));
-        if(CurrentSecond == 60){
-            CurrentSecond = CurrentSecond % 60;
-            CurrentMinute++;
-        }
-        TIME__LINE__CURRENT__TIME.innerHTML = `${ZeroAdder(CurrentMinute)}:${ZeroAdder(CurrentSecond)}`;
-        if(TIME__LINE__CURRENT__TIME.textContent == TimeLineMaxTime.textContent){
-            pauseAudio();
-            clearCalcTime(false);
-        }
-    }, 10);
-    TimeLineMaxTime.innerHTML = `${ZeroAdder(AudioTimeMin)}:${ZeroAdder(AudioTimeSec)}`;
+function ZeroAdder (num) {
+    if (String(num).length >= 2) return num
+    return "0" + String(num);
 }
 
+function SetValuesForTimersAndRange () {
+    let AudioTimeMin = (Math.floor(AUDIO__TAG.duration / 60)).toFixed(0);
+    let AudioTimeSec = (Math.round(AUDIO__TAG.duration % 60)).toFixed(0);
+    MUSIC__RANGE.max = Math.round(AUDIO__TAG.duration);
+    clearCalcTime();
+    CalcTime = setInterval(CurrentMusicTime, 1000);
+    TIME__LINE__MAX__TIME.innerHTML = `${ZeroAdder(AudioTimeMin)}:${ZeroAdder(AudioTimeSec)}`;
+}
+
+function CurrentMusicTime () {
+    CurrentSecond++;
+    MUSIC__RANGE.setAttribute("value", (CurrentSecond + CurrentMinute * 60));
+    if(CurrentSecond == 60){
+        CurrentSecond = CurrentSecond % 60;
+        CurrentMinute++;
+    }
+    TIME__LINE__CURRENT__TIME.innerHTML = `${ZeroAdder(CurrentMinute)}:${ZeroAdder(CurrentSecond)}`;
+    if(TIME__LINE__CURRENT__TIME.textContent == TIME__LINE__MAX__TIME.textContent){
+        pauseAudio();
+        clearCalcTime(false);
+    }
+}
 function SetValuesForCurrentMusic (element) {
     const CURRENT__MUSIC__WALLPAPER = document.querySelector(".current__music--wallpaper");
     const CURRENT__MUSIC__SONGNAME = document.querySelector(".current__music--song--name");
@@ -162,12 +168,14 @@ function playAudio () {
         AUDIO__TAG.load();
         isItNeedReload = false;
     }
+    CalcTime = setInterval(CurrentMusicTime, 1000)
     AUDIO__TAG.play();
     CONTROL__PLAY__BUTTON.innerHTML = `<i class="fa fa-pause"></i>`;
     isPlaying = true;
 }
 
-function pauseAudio (newAudioTag) {
+function pauseAudio () {
+    clearInterval(CalcTime);
     AUDIO__TAG.pause();
     CONTROL__PLAY__BUTTON.innerHTML = `<i class="fa fa-play"></i>`;
     isPlaying = false;
@@ -177,23 +185,23 @@ CONTROL__NEXT__BUTTON.addEventListener("click", goNext);
 CONTROL__PREV__BUTTON.addEventListener("click", goPrev);
 
 function goNext () {
+    clearCalcTime();
     let CurrentMusicTag = CurrentMusicSource.getAttribute("music--tag"), NextMusic;
     NextMusic = ALL__MUSICS__AVAILABLE.querySelector(`[music--tag="${++CurrentMusicTag}"]`);
     if (CurrentMusicTag === SERVER__DATA.length) {
         NextMusic = ALL__MUSICS__AVAILABLE.querySelector(`[music--tag="0"]`);
     }
     playTrack(NextMusic);
-    clearCalcTime();
 }
 
 function goPrev () {
+    clearCalcTime();
     let CurrentMusicTag = CurrentMusicSource.getAttribute("music--tag"), PrevMusic;
     PrevMusic = ALL__MUSICS__AVAILABLE.querySelector(`[music--tag="${--CurrentMusicTag}"`);
     if (CurrentMusicTag === -1) {
         PrevMusic = ALL__MUSICS__AVAILABLE.querySelector(`[music--tag="${SERVER__DATA.length - 1}"]`);
     }
     playTrack(PrevMusic);
-    clearCalcTime();
 }
 
 function clearCalcTime(ClearCurrentTime = true){
