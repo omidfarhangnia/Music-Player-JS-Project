@@ -1,4 +1,4 @@
-var ServerData = `
+var SERVER__DATA = `
 [
     {
         "SongName" : "Adagio Con Amore" ,
@@ -72,52 +72,81 @@ var ServerData = `
     }
 ]
 `;
-ServerData = JSON.parse(ServerData);
-window.addEventListener("load", FillAllMusicElement);
+SERVER__DATA = JSON.parse(SERVER__DATA);
+window.addEventListener("load", FillMusicElement);
 
-const AllMusicsAvailable = document.querySelector('.All__musics__available');
-function FillAllMusicElement () {
+const ALL__MUSICS__AVAILABLE = document.querySelector('.All__musics__available');
+const AUDIO__TAG = document.querySelector(".content__container--audio");
+const CONTROL__NEXT__BUTTON = document.querySelector(".control__next--btn");
+const CONTROL__PREV__BUTTON = document.querySelector(".control__prev--btn");
+const CONTROL__PLAY__BUTTON = document.querySelector(".control__play--btn");
+const TIME__LINE__CURRENT__TIME = document.querySelector(".timeline__CurrentTime");
+
+var CurrentMusicSource, isItNeedReload = false, CurrentMinute = 0, CurrentSecond = 0, isPlaying = false, CalcTime;
+
+function FillMusicElement () {
     let ElementsContainer = ``;
-    for(var i = 0; i < ServerData.length; i++){
-        var MusicElement = `<div class="musics__tags" Music--tag="${i}" onclick="playTrack(this)">${ServerData[i].SongName}</div>`;
+    for(var i = 0; i < SERVER__DATA.length; i++){
+        var MusicElement = `<div class="musics__tags" Music--tag="${i}" onclick="playTrack(this)">${SERVER__DATA[i].SongName}</div>`;
         ElementsContainer += MusicElement;
     }
-    AllMusicsAvailable.innerHTML = ElementsContainer;
+    ALL__MUSICS__AVAILABLE.innerHTML = ElementsContainer;
 }
 
-const AudioTag = document.querySelector(".content__container--audio");
-var isNeedReload = false , CurrentMusicSource;
 function playTrack (element) {
-    isNeedReload = true;
+    isItNeedReload = true;
     SetValuesForCurrentMusic(element);
-    pauseAudio();
-    CurrentMusicSource = AudioTag.querySelector("source");
+    playAudio();
+    setTimeout(() => {
+        SetValuesForRange();
+    }, 100);
+    CurrentMusicSource = AUDIO__TAG.querySelector("source");
+}
+
+function SetValuesForRange () {
+    const music__range = document.querySelector("#music__range")
+    const TimeLineMaxTime = document.querySelector(".timeline__maxTime");
+    let AudioTimeMin = (Math.floor(AUDIO__TAG.duration / 60)).toFixed(0);
+    let AudioTimeSec = (Math.round(AUDIO__TAG.duration % 60)).toFixed(0);
+    clearCalcTime();main
+
+    let ZeroAdder = function (num) {
+        if (String(num).length >= 2) return num
+        return "0" + String(num);
+    }
+
+    CalcTime = setInterval(() => {
+        CurrentSecond++;
+        if(CurrentSecond == 60){
+            CurrentSecond = CurrentSecond % 60;
+            CurrentMinute++;
+        }
+        TIME__LINE__CURRENT__TIME.innerHTML = `${ZeroAdder(CurrentMinute)}:${ZeroAdder(CurrentSecond)}`;
+        if(TIME__LINE__CURRENT__TIME.textContent == TimeLineMaxTime.textContent){
+            pauseAudio();
+            clearCalcTime(false);
+        }
+    }, 1000);
+    TimeLineMaxTime.innerHTML = `${ZeroAdder(AudioTimeMin)}:${ZeroAdder(AudioTimeSec)}`;
 }
 
 function SetValuesForCurrentMusic (element) {
-    const CurrentMusicWallpaper = document.querySelector(".current__music--wallpaper");
-    const CurrentMusicSongName = document.querySelector(".current__music--song--name");
-    const CurrentMusicSingerName = document.querySelector(".current__music--singer--name");
+    const CURRENT__MUSIC__WALLPAPER = document.querySelector(".current__music--wallpaper");
+    const CURRENT__MUSIC__SONGNAME = document.querySelector(".current__music--song--name");
+    const CURRENT__MUSIC__SINGERNAME = document.querySelector(".current__music--singer--name");
     let MusicTag = element.getAttribute("Music--tag")
-    let MusicData = ServerData[MusicTag];
-    CurrentMusicWallpaper.style.backgroundImage = MusicData.wallpaper;
-    CurrentMusicSongName.innerHTML = MusicData.SongName;
-    if(MusicData.SingerName == "null"){
-        CurrentMusicSingerName.innerHTML = "unknown";
+    let selectedMusicData = SERVER__DATA[MusicTag];
+    CURRENT__MUSIC__WALLPAPER.style.backgroundImage = selectedMusicData.wallpaper;
+    CURRENT__MUSIC__SONGNAME.innerHTML = selectedMusicData.SongName;
+    if(selectedMusicData.SingerName == "null"){
+        CURRENT__MUSIC__SINGERNAME.innerHTML = "unknown";
     }else{
-        CurrentMusicSingerName.innerHTML = MusicData.SingerName;
+        CURRENT__MUSIC__SINGERNAME.innerHTML = selectedMusicData.SingerName;
     }
-    AudioTag.innerHTML = `<source src="${MusicData.path}" Music--tag="${MusicTag}">`;
+    AUDIO__TAG.innerHTML = `<source src="${selectedMusicData.path}" Music--tag="${MusicTag}">`;
 }
 
-// function SetValuesForRange () {
-//     const TimeLineMinTime = document.querySelector(".timeline__minTime");
-//     const TimeLineMaxTime = document.querySelector(".timeline__maxTime");
-//     let AudioTime = AudioTag.duration;
-// }
-const ControlPlayBTN = document.querySelector(".control__play--btn");
-var isPlaying = false;
-ControlPlayBTN.addEventListener("click" , StartOrPause);
+CONTROL__PLAY__BUTTON.addEventListener("click" , StartOrPause);
 function StartOrPause () {
     if(isPlaying === true){
         pauseAudio();
@@ -127,39 +156,48 @@ function StartOrPause () {
 }
 
 function playAudio () {
-    if(isNeedReload === true) {
-        AudioTag.load();
-        isNeedReload = false;
+    if(isItNeedReload === true) {
+        AUDIO__TAG.load();
+        isItNeedReload = false;
     }
-    AudioTag.play();
-    ControlPlayBTN.innerHTML = `<i class="fa fa-pause"></i>`;
+    AUDIO__TAG.play();
+    CONTROL__PLAY__BUTTON.innerHTML = `<i class="fa fa-pause"></i>`;
     isPlaying = true;
 }
-function pauseAudio () {
-    AudioTag.pause();
-    ControlPlayBTN.innerHTML = `<i class="fa fa-play"></i>`;
+
+function pauseAudio (newAudioTag) {
+    AUDIO__TAG.pause();
+    CONTROL__PLAY__BUTTON.innerHTML = `<i class="fa fa-play"></i>`;
     isPlaying = false;
 }
 
-const ControlNextBTN = document.querySelector(".control__next--btn");
-const ControlPrevBTN = document.querySelector(".control__prev--btn");
-ControlNextBTN.addEventListener("click", goNext);
-ControlPrevBTN.addEventListener("click", goPrev);
+CONTROL__NEXT__BUTTON.addEventListener("click", goNext);
+CONTROL__PREV__BUTTON.addEventListener("click", goPrev);
 
 function goNext () {
     let CurrentMusicTag = CurrentMusicSource.getAttribute("music--tag"), NextMusic;
-    NextMusic = AllMusicsAvailable.querySelector(`[music--tag="${++CurrentMusicTag}"]`);
-    if (CurrentMusicTag === ServerData.length) {
-        NextMusic = AllMusicsAvailable.querySelector(`[music--tag="0"]`);
+    NextMusic = ALL__MUSICS__AVAILABLE.querySelector(`[music--tag="${++CurrentMusicTag}"]`);
+    if (CurrentMusicTag === SERVER__DATA.length) {
+        NextMusic = ALL__MUSICS__AVAILABLE.querySelector(`[music--tag="0"]`);
     }
     playTrack(NextMusic);
+    clearCalcTime();
 }
 
 function goPrev () {
     let CurrentMusicTag = CurrentMusicSource.getAttribute("music--tag"), PrevMusic;
-    PrevMusic = AllMusicsAvailable.querySelector(`[music--tag="${--CurrentMusicTag}"`);
+    PrevMusic = ALL__MUSICS__AVAILABLE.querySelector(`[music--tag="${--CurrentMusicTag}"`);
     if (CurrentMusicTag === -1) {
-        PrevMusic = AllMusicsAvailable.querySelector(`[music--tag="${ServerData.length - 1}"]`);
+        PrevMusic = ALL__MUSICS__AVAILABLE.querySelector(`[music--tag="${SERVER__DATA.length - 1}"]`);
     }
     playTrack(PrevMusic);
+    clearCalcTime();
+}
+
+function clearCalcTime(ClearCurrentTime = true){
+    clearTimeout(CalcTime);
+    CurrentMinute = 0;
+    CurrentSecond = 0;
+    if(ClearCurrentTime === false) return;
+    TIME__LINE__CURRENT__TIME.innerHTML = "00:00";
 }
