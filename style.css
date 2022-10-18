@@ -40,12 +40,21 @@
 .current__music--wallpaper{
     background-image: url(./images/cd\ disk\ symbol.png);
     background-size: cover;
-    background-size: 80%;
     background-repeat: no-repeat;
     background-position: center;
-    border-radius: 0 0 2rem 2rem;
-    height: 250px;
-    width: 250px;
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    margin-top: 1rem;
+    animation: MusicWallpaperAnimation 10s infinite;
+}
+@keyframes MusicWallpaperAnimation {
+    0%{
+        rotate: 0;
+    }
+    100%{
+        rotate: 360deg;
+    }
 }
 .current__music--song--name{
     font-size: 3rem;
