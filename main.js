@@ -101,15 +101,16 @@ function playTrack (element) {
     playAudio();
     setTimeout(() => {
         SetValuesForTimersAndRange();
-    }, 100);
+    }, 1000);
     CurrentMusicSource = AUDIO__TAG.querySelector("source");
 }
 
-// MUSIC__RANGE.addEventListener("change", changeTheRangeValue)
-// function changeTheRangeValue () {
-//     let newRangeValue = MUSIC__RANGE.getAttribute("value");
-//     console.log(newRangeValue)
-// }
+MUSIC__RANGE.addEventListener("change", changeTheRangeValue)
+function changeTheRangeValue () {
+    CurrentSecond = (MUSIC__RANGE.value % 60);
+    CurrentMinute = (Math.floor(MUSIC__RANGE.value / 60)).toFixed(0);
+    AUDIO__TAG.currentTime = MUSIC__RANGE.value;
+}
 
 function ZeroAdder (num) {
     if (String(num).length >= 2) return num
@@ -185,6 +186,7 @@ CONTROL__NEXT__BUTTON.addEventListener("click", goNext);
 CONTROL__PREV__BUTTON.addEventListener("click", goPrev);
 
 function goNext () {
+    MUSIC__RANGE.value = 0;
     clearCalcTime();
     let CurrentMusicTag = CurrentMusicSource.getAttribute("music--tag"), NextMusic;
     NextMusic = ALL__MUSICS__AVAILABLE.querySelector(`[music--tag="${++CurrentMusicTag}"]`);
@@ -195,6 +197,7 @@ function goNext () {
 }
 
 function goPrev () {
+    MUSIC__RANGE.value = 0;
     clearCalcTime();
     let CurrentMusicTag = CurrentMusicSource.getAttribute("music--tag"), PrevMusic;
     PrevMusic = ALL__MUSICS__AVAILABLE.querySelector(`[music--tag="${--CurrentMusicTag}"`);
