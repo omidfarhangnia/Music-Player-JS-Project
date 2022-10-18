@@ -98,17 +98,18 @@ function playTrack (element) {
     SetValuesForCurrentMusic(element);
     playAudio();
     setTimeout(() => {
-        SetValuesForRange();
+        SetValuesForTimersAndRange();
     }, 100);
     CurrentMusicSource = AUDIO__TAG.querySelector("source");
 }
 
-function SetValuesForRange () {
-    const music__range = document.querySelector("#music__range")
+function SetValuesForTimersAndRange () {
+    const music__range = document.querySelector("#music__range");
     const TimeLineMaxTime = document.querySelector(".timeline__maxTime");
     let AudioTimeMin = (Math.floor(AUDIO__TAG.duration / 60)).toFixed(0);
     let AudioTimeSec = (Math.round(AUDIO__TAG.duration % 60)).toFixed(0);
-    clearCalcTime();main
+    music__range.max = Math.round(AUDIO__TAG.duration);
+    clearCalcTime();
 
     let ZeroAdder = function (num) {
         if (String(num).length >= 2) return num
@@ -117,6 +118,7 @@ function SetValuesForRange () {
 
     CalcTime = setInterval(() => {
         CurrentSecond++;
+        music__range.setAttribute("value", (CurrentSecond + CurrentMinute * 60));
         if(CurrentSecond == 60){
             CurrentSecond = CurrentSecond % 60;
             CurrentMinute++;
@@ -126,7 +128,7 @@ function SetValuesForRange () {
             pauseAudio();
             clearCalcTime(false);
         }
-    }, 1000);
+    }, 10);
     TimeLineMaxTime.innerHTML = `${ZeroAdder(AudioTimeMin)}:${ZeroAdder(AudioTimeSec)}`;
 }
 
