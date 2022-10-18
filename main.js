@@ -5,70 +5,70 @@ var SERVER__DATA = `
         "SingerName" : "null" ,
         "isFavorite" : false ,
         "path" : "./musics/Adagio Con Amore.mp3" ,
-        "wallpaper" : "urimg"
+        "wallpaper" : "https://picsum.photos/200/200?random=1"
     },
     {
         "SongName" : "Butterfly Waltz" ,
         "SingerName" : "null" ,
         "isFavorite" : true ,
         "path" : "./musics/Butterfly Waltz.mp3" ,
-        "wallpaper" : "urimg"
+        "wallpaper" : "https://picsum.photos/200/200?random=2"
     },
     {
         "SongName" : "Dream of Dreams" ,
         "SingerName" : "null" ,
         "isFavorite" : true ,
         "path" : "./musics/Dream of Dreams.mp3" ,
-        "wallpaper" : "urimg"
+        "wallpaper" : "https://picsum.photos/200/200?random=3"
     },
     {
         "SongName" : "Italian Summer" ,
         "SingerName" : "null" ,
         "isFavorite" : false ,
         "path" : "./musics/Italian Summer.mp3" ,
-        "wallpaper" : "urimg"
+        "wallpaper" : "https://picsum.photos/200/200?random=4"
     },
     {
         "SongName" : "Largo Maestoso" ,
         "SingerName" : "null" ,
         "isFavorite" : false ,
         "path" : "./musics/Largo Maestoso.mp3" ,
-        "wallpaper" : "urimg"
+        "wallpaper" : "https://picsum.photos/200/200?random=5"
     },
     {
         "SongName" : "Moonlit Shore" ,
         "SingerName" : "null" ,
         "isFavorite" : true ,
         "path" : "./musics/Moonlit Shore.mp3" ,
-        "wallpaper" : "urimg"
+        "wallpaper" : "https://picsum.photos/200/200?random=6"
     },
     {
         "SongName" : "Rain" ,
         "SingerName" : "null" ,
         "isFavorite" : false ,
         "path" : "./musics/Rain.mp3" ,
-        "wallpaper" : "urimg"
+        "wallpaper" : "https://picsum.photos/200/200?random=7"
     },
     {
         "SongName" : "Solitary Hill" ,
         "SingerName" : "null" ,
         "isFavorite" : false ,
         "path" : "./musics/Solitary Hill.mp3" ,
-        "wallpaper" : "urimg"
+        "wallpaper" : "https://picsum.photos/200/200?random=8"
     },
     {
         "SongName" : "Time Forgotten" ,
         "SingerName" : "null" ,
         "isFavorite" : true ,
         "path" : "./musics/Time Forgotten.mp3" ,
-        "wallpaper" : "urimg"
+        "wallpaper" : "https://picsum.photos/200/200?random=9"
     },
     {
         "SongName" : "Wind" ,
         "SingerName" : "null" ,
         "isFavorite" : false ,
         "path" : "./musics/Wind.mp3" ,
-        "wallpaper" : "urimg"
+        "wallpaper" : "https://picsum.photos/200/200?random=10"
     }
 ]
 `;
@@ -145,7 +145,7 @@ function SetValuesForCurrentMusic (element) {
     const CURRENT__MUSIC__SINGERNAME = document.querySelector(".current__music--singer--name");
     let MusicTag = element.getAttribute("Music--tag")
     let selectedMusicData = SERVER__DATA[MusicTag];
-    CURRENT__MUSIC__WALLPAPER.style.backgroundImage = selectedMusicData.wallpaper;
+    CURRENT__MUSIC__WALLPAPER.style.backgroundImage = `url(${selectedMusicData.wallpaper})`;
     CURRENT__MUSIC__SONGNAME.innerHTML = selectedMusicData.SongName;
     if(selectedMusicData.SingerName == "null"){
         CURRENT__MUSIC__SINGERNAME.innerHTML = "unknown";
