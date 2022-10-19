@@ -153,6 +153,11 @@ function SetValuesForCurrentMusic (element) {
     }else{
         CURRENT__MUSIC__SINGERNAME.innerHTML = selectedMusicData.SingerName;
     }
+    if(SERVER__DATA[MusicTag].isFavorite == true){
+        LIKE__ICON.classList.add("likedMusic");
+    }else{
+        LIKE__ICON.classList.remove("likedMusic");
+    }
     AUDIO__TAG.innerHTML = `<source src="${selectedMusicData.path}" Music--tag="${MusicTag}">`;
 }
 
@@ -255,12 +260,10 @@ function addItToStorage (CurrentMusicId) {
 function removeItFromStorage (CurrentMusicId) {
     var userFavoriteMusic = localStorage.getItem("favorite__musics");
     var favoriteMusicArray = new Set(userFavoriteMusic.match(/(\d)/g));
-    if(favoriteMusicArray.has(CurrentMusicId)){
-        favoriteMusicArray.delete(CurrentMusicId)
-    }
+    favoriteMusicArray.delete(CurrentMusicId)
     userFavoriteMusic = "";
-    for(let i = 0; i < favoriteMusicArray; i++){
-        userFavoriteMusic += `-${CurrentMusicId}-`;
+    for(let i = 0; i < favoriteMusicArray.size; i++){
+        userFavoriteMusic += `-${[...favoriteMusicArray][i]}-`;
     }
     localStorage.setItem("favorite__musics", userFavoriteMusic)
 }
