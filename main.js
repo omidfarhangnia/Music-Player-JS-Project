@@ -299,3 +299,25 @@ function removeItFromStorage (CurrentMusicId) {
     }
     localStorage.setItem("favorite__musics", userFavoriteMusic)
 }
+
+CONTROL__VOLUME__BTN.addEventListener("click", checkIsItMute)
+
+function checkIsItMute () {
+    if(isMute === true){
+        makeAudioVocal();
+        isMute = false;
+    }else{
+        makeAudioMute();
+        isMute = true;
+    }
+}
+
+function makeAudioVocal () {
+    CONTROL__VOLUME__BTN.innerHTML = `<i class="fas fa-volume-up fa-2x"></i>`;
+    AUDIO__TAG.muted = false;
+}
+
+function makeAudioMute () {
+    CONTROL__VOLUME__BTN.innerHTML = `<i class="fa fa-volume-mute fa-2x"></i>`;
+    AUDIO__TAG.muted = true;
+}
