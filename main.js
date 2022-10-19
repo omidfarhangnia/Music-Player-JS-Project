@@ -116,6 +116,7 @@ function addFavoriteToData () {
 }
 
 function playTrack (element) {
+    MUSIC__RANGE.value = 0;
     isItNeedReload = true;
     SetValuesForCurrentMusic(element);
     playAudio();
