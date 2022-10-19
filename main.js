@@ -93,6 +93,12 @@ const CONTROL__VOLUME__BTN = document.querySelector(".control__volume--btn")
 
 var CurrentMusicSource, isItNeedReload = false, CurrentMinute = 0, CurrentSecond = 0, isPlaying = false, CalcTime, isMute = false;
 
+CONTROL__VOLUME__BTN.addEventListener("click", checkIsItMute);
+MUSIC__RANGE.addEventListener("change", changeTheRangeValue);
+CONTROL__PLAY__BUTTON.addEventListener("click" , StartOrPause);
+CONTROL__NEXT__BUTTON.addEventListener("click", goNext);
+CONTROL__PREV__BUTTON.addEventListener("click", goPrev);
+
 function fillMusicElement () {
     let ElementsContainer = ``;
     for(var i = 0; i < SERVER__DATA.length; i++){
@@ -126,7 +132,6 @@ function playTrack (element) {
     CurrentMusicSource = AUDIO__TAG.querySelector("source");
 }
 
-MUSIC__RANGE.addEventListener("change", changeTheRangeValue)
 function changeTheRangeValue () {
     CurrentSecond = (MUSIC__RANGE.value % 60);
     CurrentMinute = (Math.floor(MUSIC__RANGE.value / 60)).toFixed(0);
@@ -160,6 +165,7 @@ function CurrentMusicTime () {
         clearCalcTime(false);
     }
 }
+
 function SetValuesForCurrentMusic (element) {
     const CURRENT__MUSIC__WALLPAPER = document.querySelector(".current__music--wallpaper");
     const CURRENT__MUSIC__SONGNAME = document.querySelector(".current__music--song--name");
@@ -181,7 +187,6 @@ function SetValuesForCurrentMusic (element) {
     AUDIO__TAG.innerHTML = `<source src="${selectedMusicData.path}" Music--tag="${MusicTag}">`;
 }
 
-CONTROL__PLAY__BUTTON.addEventListener("click" , StartOrPause);
 function StartOrPause () {
     if(isPlaying === true){
         pauseAudio();
@@ -207,9 +212,6 @@ function pauseAudio () {
     CONTROL__PLAY__BUTTON.innerHTML = `<i class="fa fa-play"></i>`;
     isPlaying = false;
 }
-
-CONTROL__NEXT__BUTTON.addEventListener("click", goNext);
-CONTROL__PREV__BUTTON.addEventListener("click", goPrev);
 
 function goNext () {
     MUSIC__RANGE.value = 0;
@@ -300,8 +302,6 @@ function removeItFromStorage (CurrentMusicId) {
     }
     localStorage.setItem("favorite__musics", userFavoriteMusic)
 }
-
-CONTROL__VOLUME__BTN.addEventListener("click", checkIsItMute)
 
 function checkIsItMute () {
     if(isMute === true){
