@@ -154,3 +154,6 @@ button{
     background-color: var(--bg-color2);
     transition: all .3s;
 }
+.likedMusic{
+    color: #b60000;
+}
