@@ -200,7 +200,10 @@ function playAudio () {
         AUDIO__TAG.load();
         isItNeedReload = false;
     }
-    CalcTime = setInterval(CurrentMusicTime, 1000)
+    // if i change the music i should reload it this value is 
+    // for the time that i want check i need load or not
+    clearInterval(CalcTime);
+    CalcTime = setInterval(CurrentMusicTime, 1000);
     AUDIO__TAG.play();
     CONTROL__PLAY__BUTTON.innerHTML = `<i class="fa fa-pause"></i>`;
     isPlaying = true;

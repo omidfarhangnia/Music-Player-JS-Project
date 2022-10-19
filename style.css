@@ -157,3 +157,6 @@ button{
 .likedMusic{
     color: #b60000;
 }
+.content__container--musics > *{
+    user-select: none;
+}
