@@ -46,14 +46,14 @@
     width: 200px;
     border-radius: 50%;
     margin-top: 1rem;
-    animation: MusicWallpaperAnimation 10s infinite;
+    animation: MusicWallpaperAnimation 30s infinite linear;
 }
 @keyframes MusicWallpaperAnimation {
     0%{
-        rotate: 0;
+        transform: rotate(0deg);
     }
     100%{
-        rotate: 360deg;
+        transform: rotate(360deg);
     }
 }
 .current__music--song--name{
