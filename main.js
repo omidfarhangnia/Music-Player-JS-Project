@@ -219,12 +219,16 @@ function clearCalcTime(ClearCurrentTime = true){
 LIKE__ICON.addEventListener("click", LikedMusic)
 function LikedMusic () {
     let CurrentMusicId = CurrentMusicSource.getAttribute("music--tag");
-    let isFavorite = changeTheHeartStyle();
+    let isFavorite = changeTheHeartStyleAndSituation();
     addItToDataArray(isFavorite, CurrentMusicId);
-    addItToStorage(isFavorite, CurrentMusicId);
+    if(isFavorite == true){
+        addItToStorage(CurrentMusicId);
+    }else{
+        removeItFromStorage(CurrentMusicId);
+    }
 }
 
-function changeTheHeartStyle(){
+function changeTheHeartStyleAndSituation(){
     if(LIKE__ICON.classList.contains("likedMusic")){
         LIKE__ICON.classList.remove("likedMusic");
         return false;
@@ -237,4 +241,26 @@ function changeTheHeartStyle(){
 function addItToDataArray (isFavorite, CurrentMusicId) {;
     SERVER__DATA[CurrentMusicId].isFavorite = isFavorite;
 }
-// localStorage.setItem("favorite__musics" , true)
+
+function addItToStorage (CurrentMusicId) {
+    var userFavoriteMusic = localStorage.getItem("favorite__musics");
+    if(userFavoriteMusic !== null){
+        userFavoriteMusic += `-${CurrentMusicId}-`;
+    }else{
+        userFavoriteMusic = `-${CurrentMusicId}-`;
+    }
+    localStorage.setItem("favorite__musics", userFavoriteMusic)
+}
+
+function removeItFromStorage (CurrentMusicId) {
+    var userFavoriteMusic = localStorage.getItem("favorite__musics");
+    var favoriteMusicArray = new Set(userFavoriteMusic.match(/(\d)/g));
+    if(favoriteMusicArray.has(CurrentMusicId)){
+        favoriteMusicArray.delete(CurrentMusicId)
+    }
+    userFavoriteMusic = "";
+    for(let i = 0; i < favoriteMusicArray; i++){
+        userFavoriteMusic += `-${CurrentMusicId}-`;
+    }
+    localStorage.setItem("favorite__musics", userFavoriteMusic)
+}
