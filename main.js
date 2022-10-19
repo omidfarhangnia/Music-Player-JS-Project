@@ -73,7 +73,10 @@ var SERVER__DATA = `
 ]
 `;
 SERVER__DATA = JSON.parse(SERVER__DATA);
-window.addEventListener("load", FillMusicElement);
+window.addEventListener("load", () => {
+    fillMusicElement();
+    addFavoriteToData();
+});
 
 const ALL__MUSICS__AVAILABLE = document.querySelector('.All__musics__available');
 const AUDIO__TAG = document.querySelector(".content__container--audio");
@@ -87,13 +90,25 @@ const LIKE__ICON = document.querySelector("#like__icon");
 
 var CurrentMusicSource, isItNeedReload = false, CurrentMinute = 0, CurrentSecond = 0, isPlaying = false, CalcTime;
 
-function FillMusicElement () {
+function fillMusicElement () {
     let ElementsContainer = ``;
     for(var i = 0; i < SERVER__DATA.length; i++){
         var MusicElement = `<div class="musics__tags" Music--tag="${i}" onclick="playTrack(this)">${SERVER__DATA[i].SongName}</div>`;
         ElementsContainer += MusicElement;
     }
     ALL__MUSICS__AVAILABLE.innerHTML = ElementsContainer;
+}
+
+function addFavoriteToData () {
+    var userFavoriteMusic = localStorage.getItem("favorite__musics");
+    var favoriteMusicArray = userFavoriteMusic.match(/(\d)/g);
+    for(let i = 0; i < favoriteMusicArray.length; i++){
+        for(let j = 0; j < SERVER__DATA.length; j++){
+            if(favoriteMusicArray[i] == j){
+                SERVER__DATA[j].isFavorite = true;
+            }
+        }
+    }
 }
 
 function playTrack (element) {
@@ -225,7 +240,7 @@ LIKE__ICON.addEventListener("click", LikedMusic)
 function LikedMusic () {
     let CurrentMusicId = CurrentMusicSource.getAttribute("music--tag");
     let isFavorite = changeTheHeartStyleAndSituation();
-    addItToDataArray(isFavorite, CurrentMusicId);
+    addSituationToDataArray(isFavorite, CurrentMusicId);
     if(isFavorite == true){
         addItToStorage(CurrentMusicId);
     }else{
@@ -243,7 +258,7 @@ function changeTheHeartStyleAndSituation(){
     }
 }
 
-function addItToDataArray (isFavorite, CurrentMusicId) {;
+function addSituationToDataArray (isFavorite, CurrentMusicId) {;
     SERVER__DATA[CurrentMusicId].isFavorite = isFavorite;
 }
 
