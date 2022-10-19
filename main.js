@@ -76,9 +76,11 @@ SERVER__DATA = JSON.parse(SERVER__DATA);
 window.addEventListener("load", () => {
     fillMusicElement();
     addFavoriteToData();
+    fillLikedMusicElement();
 });
 
-const ALL__MUSICS__AVAILABLE = document.querySelector('.All__musics__available');
+const ALL__MUSICS__AVAILABLE = document.querySelector(".All__musics__available");
+const ALL__LIKED__MUSICS__AVAILABLE = document.querySelector(".All__liked__available")
 const AUDIO__TAG = document.querySelector(".content__container--audio");
 const CONTROL__NEXT__BUTTON = document.querySelector(".control__next--btn");
 const CONTROL__PREV__BUTTON = document.querySelector(".control__prev--btn");
@@ -87,8 +89,9 @@ const TIME__LINE__CURRENT__TIME = document.querySelector(".timeline__CurrentTime
 const TIME__LINE__MAX__TIME = document.querySelector(".timeline__maxTime");
 const MUSIC__RANGE = document.querySelector("#music__range");
 const LIKE__ICON = document.querySelector("#like__icon");
+const CONTROL__VOLUME__BTN = document.querySelector(".control__volume--btn")
 
-var CurrentMusicSource, isItNeedReload = false, CurrentMinute = 0, CurrentSecond = 0, isPlaying = false, CalcTime;
+var CurrentMusicSource, isItNeedReload = false, CurrentMinute = 0, CurrentSecond = 0, isPlaying = false, CalcTime, isMute = false;
 
 function fillMusicElement () {
     let ElementsContainer = ``;
@@ -102,6 +105,7 @@ function fillMusicElement () {
 function addFavoriteToData () {
     var userFavoriteMusic = localStorage.getItem("favorite__musics");
     var favoriteMusicArray = userFavoriteMusic.match(/(\d)/g);
+    if(favoriteMusicArray == null) return;
     for(let i = 0; i < favoriteMusicArray.length; i++){
         for(let j = 0; j < SERVER__DATA.length; j++){
             if(favoriteMusicArray[i] == j){
@@ -117,7 +121,7 @@ function playTrack (element) {
     playAudio();
     setTimeout(() => {
         SetValuesForTimersAndRange();
-    }, 1000);
+    }, 100);
     CurrentMusicSource = AUDIO__TAG.querySelector("source");
 }
 
@@ -246,6 +250,19 @@ function LikedMusic () {
     }else{
         removeItFromStorage(CurrentMusicId);
     }
+    fillLikedMusicElement();
+}
+
+function fillLikedMusicElement () {
+    var userFavoriteMusic = localStorage.getItem("favorite__musics");
+    var favoriteMusicArray = userFavoriteMusic.match(/(\d)/g);
+    if(favoriteMusicArray == null) return;
+    let ElementsContainer = ``;
+    for(let i = 0; i < favoriteMusicArray.length; i++){
+        var MusicElement = `<div class="musics__tags" Music--tag="${favoriteMusicArray[i]}" onclick="playTrack(this)">${SERVER__DATA[favoriteMusicArray[i]].SongName}</div>`;
+        ElementsContainer += MusicElement;
+    }
+    ALL__LIKED__MUSICS__AVAILABLE.innerHTML = ElementsContainer;
 }
 
 function changeTheHeartStyleAndSituation(){
