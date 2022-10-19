@@ -10,14 +10,14 @@ var SERVER__DATA = `
     {
         "SongName" : "Butterfly Waltz" ,
         "SingerName" : "null" ,
-        "isFavorite" : true ,
+        "isFavorite" : false ,
         "path" : "./musics/Butterfly Waltz.mp3" ,
         "wallpaper" : "https://picsum.photos/200/200?random=2"
     },
     {
         "SongName" : "Dream of Dreams" ,
         "SingerName" : "null" ,
-        "isFavorite" : true ,
+        "isFavorite" : false ,
         "path" : "./musics/Dream of Dreams.mp3" ,
         "wallpaper" : "https://picsum.photos/200/200?random=3"
     },
@@ -38,7 +38,7 @@ var SERVER__DATA = `
     {
         "SongName" : "Moonlit Shore" ,
         "SingerName" : "null" ,
-        "isFavorite" : true ,
+        "isFavorite" : false ,
         "path" : "./musics/Moonlit Shore.mp3" ,
         "wallpaper" : "https://picsum.photos/200/200?random=6"
     },
@@ -59,7 +59,7 @@ var SERVER__DATA = `
     {
         "SongName" : "Time Forgotten" ,
         "SingerName" : "null" ,
-        "isFavorite" : true ,
+        "isFavorite" : false ,
         "path" : "./musics/Time Forgotten.mp3" ,
         "wallpaper" : "https://picsum.photos/200/200?random=9"
     },
@@ -83,6 +83,7 @@ const CONTROL__PLAY__BUTTON = document.querySelector(".control__play--btn");
 const TIME__LINE__CURRENT__TIME = document.querySelector(".timeline__CurrentTime");
 const TIME__LINE__MAX__TIME = document.querySelector(".timeline__maxTime");
 const MUSIC__RANGE = document.querySelector("#music__range");
+const LIKE__ICON = document.querySelector("#like__icon");
 
 var CurrentMusicSource, isItNeedReload = false, CurrentMinute = 0, CurrentSecond = 0, isPlaying = false, CalcTime;
 
@@ -214,3 +215,26 @@ function clearCalcTime(ClearCurrentTime = true){
     if(ClearCurrentTime === false) return;
     TIME__LINE__CURRENT__TIME.innerHTML = "00:00";
 }
+
+LIKE__ICON.addEventListener("click", LikedMusic)
+function LikedMusic () {
+    let CurrentMusicId = CurrentMusicSource.getAttribute("music--tag");
+    let isFavorite = changeTheHeartStyle();
+    addItToDataArray(isFavorite, CurrentMusicId);
+    addItToStorage(isFavorite, CurrentMusicId);
+}
+
+function changeTheHeartStyle(){
+    if(LIKE__ICON.classList.contains("likedMusic")){
+        LIKE__ICON.classList.remove("likedMusic");
+        return false;
+    }else{
+        LIKE__ICON.classList.add("likedMusic");
+        return true;
+    }
+}
+
+function addItToDataArray (isFavorite, CurrentMusicId) {;
+    SERVER__DATA[CurrentMusicId].isFavorite = isFavorite;
+}
+// localStorage.setItem("favorite__musics" , true)
