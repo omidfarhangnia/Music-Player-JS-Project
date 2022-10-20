@@ -94,11 +94,11 @@ const CONTROL__VOLUME__BTN = document.querySelector(".control__volume--btn")
 var CurrentMusicSource, isItNeedReload = false, CurrentMinute = 0, CurrentSecond = 0, isPlaying = false, CalcTime, isMute = false, isLoaded = false;
 
 AUDIO__TAG.addEventListener("loadeddata", () => {
+    isLoaded = true;
     playAudio();
     setTimeout(() => {
         SetValuesForTimersAndRange();
     }, 100);
-    isLoaded = true;
 })
 CONTROL__VOLUME__BTN.addEventListener("click", checkIsItMute);
 MUSIC__RANGE.addEventListener("change", changeTheRangeValue);
@@ -129,6 +129,7 @@ function addFavoriteToData () {
 }
 
 function playTrack (element) {
+    isLoaded = false;
     MUSIC__RANGE.value = 0;
     isItNeedReload = true;
     SetValuesForCurrentMusic(element);
