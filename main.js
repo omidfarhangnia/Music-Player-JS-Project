@@ -91,7 +91,7 @@ const MUSIC__RANGE = document.querySelector("#music__range");
 const LIKE__ICON = document.querySelector("#like__icon");
 const CONTROL__VOLUME__BTN = document.querySelector(".control__volume--btn")
 
-var CurrentMusicSource, isItNeedReload = false, CurrentMinute = 0, CurrentSecond = 0, isPlaying = false, CalcTime, isMute = false, isLoaded = false;
+var CurrentMusicSource, CurrentMinute = 0, CurrentSecond = 0, isPlaying = false, CalcTime, isMute = false, isLoaded = false;
 
 AUDIO__TAG.addEventListener("loadeddata", () => {
     isLoaded = true;
@@ -131,9 +131,9 @@ function addFavoriteToData () {
 function playTrack (element) {
     isLoaded = false;
     MUSIC__RANGE.value = 0;
-    isItNeedReload = true;
     SetValuesForCurrentMusic(element);
     CurrentMusicSource = AUDIO__TAG.querySelector("source");
+    AUDIO__TAG.load();
 }
 
 function changeTheRangeValue () {
@@ -201,10 +201,6 @@ function StartOrPause () {
 
 function playAudio () {
     if(isLoaded === false) return;
-    if(isItNeedReload === true) {
-        AUDIO__TAG.load();
-        isItNeedReload = false;
-    }
     // if i change the music i should reload it this value is 
     // for the time that i want check i need load or not
     clearInterval(CalcTime);
