@@ -133,6 +133,7 @@ function playTrack (element) {
     MUSIC__RANGE.value = 0;
     SetValuesForCurrentMusic(element);
     clearCalcTime();
+    CONTROL__PLAY__BUTTON.innerHTML = `<i class="fa fa-play"></i>`;
     TIME__LINE__CURRENT__TIME.innerHTML = "00:00";
     CurrentMusicSource = AUDIO__TAG.querySelector("source");
     AUDIO__TAG.load();
