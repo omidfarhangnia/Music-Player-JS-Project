@@ -160,6 +160,9 @@ button{
 .content__container--musics > *{
     user-select: none;
 }
+#download__icon{
+    opacity: .4;
+}
 @media (max-width: 800px) {
     :root{
         font-size: 13px;
