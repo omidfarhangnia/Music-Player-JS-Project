@@ -132,7 +132,7 @@ function playTrack (element) {
     isLoaded = false;
     MUSIC__RANGE.value = 0;
     SetValuesForCurrentMusic(element);
-    pauseAudio();
+    clearCalcTime();
     TIME__LINE__CURRENT__TIME.innerHTML = "00:00";
     CurrentMusicSource = AUDIO__TAG.querySelector("source");
     AUDIO__TAG.load();
