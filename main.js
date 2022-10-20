@@ -93,6 +93,12 @@ const CONTROL__VOLUME__BTN = document.querySelector(".control__volume--btn")
 
 var CurrentMusicSource, isItNeedReload = false, CurrentMinute = 0, CurrentSecond = 0, isPlaying = false, CalcTime, isMute = false;
 
+AUDIO__TAG.addEventListener("loadeddata", () => {
+    playAudio();
+    setTimeout(() => {
+        SetValuesForTimersAndRange();
+    }, 100);
+})
 CONTROL__VOLUME__BTN.addEventListener("click", checkIsItMute);
 MUSIC__RANGE.addEventListener("change", changeTheRangeValue);
 CONTROL__PLAY__BUTTON.addEventListener("click" , StartOrPause);
@@ -125,10 +131,6 @@ function playTrack (element) {
     MUSIC__RANGE.value = 0;
     isItNeedReload = true;
     SetValuesForCurrentMusic(element);
-    playAudio();
-    setTimeout(() => {
-        SetValuesForTimersAndRange();
-    }, 100);
     CurrentMusicSource = AUDIO__TAG.querySelector("source");
 }
 
