@@ -91,13 +91,14 @@ const MUSIC__RANGE = document.querySelector("#music__range");
 const LIKE__ICON = document.querySelector("#like__icon");
 const CONTROL__VOLUME__BTN = document.querySelector(".control__volume--btn")
 
-var CurrentMusicSource, isItNeedReload = false, CurrentMinute = 0, CurrentSecond = 0, isPlaying = false, CalcTime, isMute = false;
+var CurrentMusicSource, isItNeedReload = false, CurrentMinute = 0, CurrentSecond = 0, isPlaying = false, CalcTime, isMute = false, isLoaded = false;
 
 AUDIO__TAG.addEventListener("loadeddata", () => {
     playAudio();
     setTimeout(() => {
         SetValuesForTimersAndRange();
     }, 100);
+    isLoaded = true;
 })
 CONTROL__VOLUME__BTN.addEventListener("click", checkIsItMute);
 MUSIC__RANGE.addEventListener("change", changeTheRangeValue);
@@ -198,6 +199,7 @@ function StartOrPause () {
 }
 
 function playAudio () {
+    if(isLoaded === false) return;
     if(isItNeedReload === true) {
         AUDIO__TAG.load();
         isItNeedReload = false;
