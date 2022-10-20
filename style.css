@@ -160,3 +160,35 @@ button{
 .content__container--musics > *{
     user-select: none;
 }
+@media (max-width: 800px) {
+    :root{
+        font-size: 13px;
+    }
+    .main__container--content{
+        width: 90%;
+        flex-wrap: wrap;
+        height: 90vh;
+    }
+    .main__container--content > div{
+        width: 100%;
+        height: auto;
+        width: 90% !important;
+    }
+    .content__container--musics{
+        order: 1;
+        max-height: 170px !important;
+    }
+    .content__container--current--music{
+        order: 2;
+        padding: 2rem 0;
+    }
+    .current__music--wallpaper{
+        width: 150px;
+        height: 150px;
+    }
+}
+@media (max-width: 500px) {
+    .current__music--likeAnddonwload{
+        gap: 60px;
+    }
+}
